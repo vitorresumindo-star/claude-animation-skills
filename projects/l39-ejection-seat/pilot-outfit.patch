@@ -1,0 +1,68 @@
+--- a/src/human.js
++++ b/src/human.js
+@@ -168,8 +168,10 @@
+ export function makeHuman(outfit = 'plate', opts = {}) {
+   const M = materials();
+   const knight = outfit === 'knight';
+-  const limbMat = knight ? M.steel : (outfit === 'archer' ? M.clothGrey : M.cloth);
+-  const legMat = knight ? M.steel : M.cloth;
++  const pilot = outfit === 'pilot';
++  const suit = pilot ? new THREE.MeshStandardMaterial({ color: 0x55633f, roughness: 0.85 }) : null;
++  const limbMat = pilot ? suit : knight ? M.steel : (outfit === 'archer' ? M.clothGrey : M.cloth);
++  const legMat = pilot ? suit : knight ? M.steel : M.cloth;
+   const handMat = knight ? M.steelDark : M.skin;
+   const thick = knight ? 0.014 : 0;
+ 
+@@ -180,7 +182,7 @@
+   const j = { root, pelvis, spine, chest };
+ 
+   // body: lower torso on spine, upper torso on chest (both lathe pieces)
+-  const bodyMat = knight ? M.steel : (outfit === 'archer' ? M.cloth : M.cloth);
++  const bodyMat = pilot ? suit : knight ? M.steel : (outfit === 'archer' ? M.cloth : M.cloth);
+   const lower = new THREE.Mesh(torsoShell(-0.18, 0.2, 0), bodyMat); spine.add(lower);
+   const upperG = torsoShell(0.18, 0.58, 0); upperG.translate(0, -0.2, 0);
+   const upper = new THREE.Mesh(upperG, bodyMat); chest.add(upper);
+@@ -212,11 +214,11 @@
+     kn.add(sph(0.06 + thick, legMat));
+     kn.add(cap(0.056 + thick, 0.36, legMat));
+     const an = new THREE.Group(); an.position.y = -0.45; kn.add(an);
+-    const footMat = knight ? M.steel : (outfit === 'archer' ? M.cloth : M.skin);
++    const footMat = pilot ? M.leather : knight ? M.steel : (outfit === 'archer' ? M.cloth : M.skin);
+     const ank = new THREE.Mesh(new THREE.CylinderGeometry(0.04, 0.045, 0.11, 20), footMat); ank.position.y = 0.0; an.add(ank);
+     if (!knight) { const cuff = new THREE.Mesh(new THREE.CylinderGeometry(0.06, 0.06, 0.05, 20), legMat); cuff.position.y = 0.045; an.add(cuff); }
+     const foot = sph(0.05, footMat, [0, -0.035, 0.05], [0.95, 0.62, 2.3]); an.add(foot);
+-    if (!knight && outfit !== 'archer') for (let t = 0; t < 5; t++) an.add(sph(0.011 - t * 0.0008, M.skin, [s * (-0.03 + t * 0.014), -0.055, 0.155 - t * 0.008]));
++    if (!knight && !pilot && outfit !== 'archer') for (let t = 0; t < 5; t++) an.add(sph(0.011 - t * 0.0008, M.skin, [s * (-0.03 + t * 0.014), -0.055, 0.155 - t * 0.008]));
+     j[k + 'Hip'] = hip; j[k + 'Kn'] = kn; j[k + 'An'] = an;
+   }
+ 
+@@ -303,6 +305,29 @@
+     spine.add(rim(0.0, 0.03, 0.02, M.leather));
+     for (const s of [1, -1]) { const k = s > 0 ? 'l' : 'r'; const b = new THREE.Mesh(new THREE.CylinderGeometry(0.05, 0.047, 0.14, 24), M.leather); b.position.y = -0.17; j[k + 'El'].add(b); }
+   }
++  if (pilot) {
++    // flight helmet (white shell, raised dark visor), harness straps, collar
++    const hm = new THREE.MeshPhysicalMaterial({ color: 0xf2f2ee, roughness: 0.3, clearcoat: 0.8 });
++    const shell = new THREE.Mesh(new THREE.SphereGeometry(0.128, 48, 24, 0, Math.PI * 2, 0, 1.75), hm);
++    shell.scale.set(0.95, 1.08, 1.06); shell.position.set(0, 0.105, -0.012); shell.rotation.x = -0.5; H.head.add(shell);
++    const visor = new THREE.Mesh(new THREE.SphereGeometry(0.134, 40, 16, -1.1, 2.2, 0.35, 0.5), new THREE.MeshPhysicalMaterial({ color: 0x20262e, metalness: 0.6, roughness: 0.1, clearcoat: 1 }));
++    visor.scale.set(0.95, 1.08, 1.06); visor.position.set(0, 0.105, -0.012); visor.rotation.x = -0.15; H.head.add(visor);
++    for (const s of [-1, 1]) {
++      const cup = new THREE.Mesh(new THREE.CylinderGeometry(0.038, 0.038, 0.03, 24), hm);
++      cup.rotation.z = Math.PI / 2; cup.position.set(s * 0.108, 0.085, -0.01); H.head.add(cup);
++    }
++    const strapMat = new THREE.MeshStandardMaterial({ color: 0x2b2d30, roughness: 0.7 });
++    for (const s of [-1, 1]) {
++      const st = new THREE.Mesh(new THREE.BoxGeometry(0.045, 0.5, 0.012), strapMat);
++      st.position.set(s * 0.085, 0.05, 0.128); st.rotation.z = s * 0.12; chest.add(st);
++    }
++    const buckle = new THREE.Mesh(new THREE.CylinderGeometry(0.035, 0.035, 0.015, 24), M.steelBright);
++    buckle.rotation.x = Math.PI / 2; buckle.position.set(0, -0.08, 0.14); chest.add(buckle);
++    const collar = new THREE.Mesh(new THREE.TorusGeometry(0.06, 0.018, 8, 24), suit);
++    collar.rotation.x = Math.PI / 2; collar.position.y = 0.36; chest.add(collar);
++    const patch = new THREE.Mesh(new THREE.BoxGeometry(0.06, 0.04, 0.01), new THREE.MeshStandardMaterial({ color: 0xc23a2b }));
++    patch.position.set(-0.09, 0.22, 0.12); chest.add(patch);
++  }
+   shadowAll(root);
+ 
+   const human = {
