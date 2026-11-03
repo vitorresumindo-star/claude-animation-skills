@@ -14,6 +14,12 @@ _Last updated 2026-11-03, branch `claude/zach-d-films-test-render-yjax2g`._
    - The casual outfit is made in `pain.js` by restyling the engine person, so this project needs no patch.
    - Rebuild: `bash projects/no-pain/make.sh` (~30 min).
 
+5. **Third video: "What would you see falling into a black hole?"** 50.5 s, 1080x1920, 30 fps, 17 shots. Hook: "As you fall toward a black hole, the universe starts looking very strange."
+   - Source: `projects/black-hole/` (`script.json`, `src/shots.js`, `src/space.js`, `make.sh`, and `README.md` with the facts and the simplified parts).
+   - The sky shows real gravitational lensing: `space.js` traces light paths around a Schwarzschild black hole every frame and bends a procedural star cube map. Use `spaceStage(makeStage, {M, bh})` and call `lens.update(camera)` after placing the camera. Pick distances with care, because the shadow is huge up close: at 12 M it already fills a 50° view.
+   - `astronaut()` restyles the engine person into a white suit and bubble helmet, with its own material copies so `redshift(k, fade)` can tint it red or fade it.
+   - Rebuild: `bash projects/black-hole/make.sh` (~30 min).
+
 ## Settings that worked
 - Voice: Kokoro `am_michael`, speed `1.12`. Word timings from Parakeet (`kit/words.py`).
 - Render: `GL=swiftshader`, 30 fps, 4 parallel segments. Final mux as in SKILL.md step 7.
@@ -27,4 +33,4 @@ _Last updated 2026-11-03, branch `claude/zach-d-films-test-render-yjax2g`._
 - `git push` returned 403 in the last session. Commits went up through the GitHub MCP tool instead. See CLAUDE.md.
 
 ## Next
-Ask the user for the next topic, or for changes to the L-39 or pain videos (voice, pacing, ending). For a new topic, copy `projects/l39-ejection-seat/` as the template and follow `skills/zach-d-films/SKILL.md`.
+Ask the user for the next topic, or for changes to the L-39, pain or black-hole videos (voice, pacing, ending). For a new topic, copy `projects/l39-ejection-seat/` as the template and follow `skills/zach-d-films/SKILL.md`.
