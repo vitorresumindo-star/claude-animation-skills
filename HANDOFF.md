@@ -10,6 +10,11 @@ _Last updated 2026-11-03, branch `claude/zach-d-films-test-render-yjax2g`._
    - Rebuild: `bash projects/l39-ejection-seat/make.sh` (~30 min). The output lands in `projects/l39-ejection-seat/build/`. The MP4 isn't stored in git.
    - The camera fix in the landing shot is included.
 
+4. **Second video: "What happens inside a Tesla when you press the accelerator?"** 55.3 s, 1080x1920, 30 fps, 14 shots: car, x-ray, pedal sensor, battery cells, the DC problem, inverter switches, three waves into the coils, spinning field, rotor dragged along, launch, two-stage 9:1 gears, regenerative braking, payoff.
+   - Source: `projects/tesla-accelerator/` (`script.json`, `src/shots.js`, `src/ev.js` with the car, battery, inverter, motor, gears and road, `driver-outfit.patch`). `README.md` lists the facts and what is simplified.
+   - Rebuild: `bash projects/tesla-accelerator/make.sh` (~30 min).
+   - Lesson: at 9:16, stack things vertically (battery below the motor, waves coming down from above) instead of side by side.
+
 ## Settings that worked
 - Voice: Kokoro `am_michael`, speed `1.12`. Word timings from Parakeet (`kit/words.py`).
 - Render: `GL=swiftshader`, 30 fps, 4 parallel segments. Final mux as in SKILL.md step 7.
@@ -21,4 +26,4 @@ _Last updated 2026-11-03, branch `claude/zach-d-films-test-render-yjax2g`._
 - `git push` returned 403 in the last session. Commits went up through the GitHub MCP tool instead. See CLAUDE.md.
 
 ## Next
-Ask the user for the next topic, or for changes to the L-39 video (voice, pacing, ending). For a new topic, copy `projects/l39-ejection-seat/` as the template and follow `skills/zach-d-films/SKILL.md`.
+Ask the user for the next topic, or for changes to the Tesla or L-39 videos (voice, pacing, ending). For a new topic, copy `projects/l39-ejection-seat/` as the template and follow `skills/zach-d-films/SKILL.md`.
