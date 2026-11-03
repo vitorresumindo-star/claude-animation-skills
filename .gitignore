@@ -11,3 +11,8 @@ __pycache__/
 skills/stick-figure/engine/template/seg/
 skills/stick-figure/engine/template/stills/
 skills/stick-figure/engine/template/silent.mp4
+
+# project build output and local Claude settings
+projects/*/build/
+.claude/settings.local.json
+*.mp4

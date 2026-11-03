@@ -19,12 +19,10 @@ Taken from the DCS L-39 flight manual (VS1-BRI seat section) and the seat data p
 - A blocking system stops both seats firing at once. After a manual canopy jettison, the rear pilot ejects first.
 
 ## Rebuild
-From the repository root:
+From the repository root, after `bash scripts/cloud-setup.sh`:
 ```bash
-cp -R skills/zach-d-films/engine /tmp/l39 && cp -R projects/l39-ejection-seat/. /tmp/l39/ && cd /tmp/l39 && patch -p1 < pilot-outfit.patch
-KIT=~/claude-animation-skills/kit; PY=$KIT/.venv/bin/python
-ln -s "$KIT/node_modules" node_modules
-"$PY" ~/claude-animation-skills/skills/stick-figure/engine/tools/tts_kokoro.py && cp audio/vo_kokoro.wav audio/vo.wav
-GL=swiftshader node render.mjs video silent.mp4 30
-ffmpeg -i silent.mp4 -i audio/vo.wav -map 0:v -map 1:a -vf scale=1080:1920:flags=lanczos -c:v libx264 -crf 17 -pix_fmt yuv420p -af "apad,loudnorm=I=-14:TP=-1.5" -c:a aac -b:a 192k -shortest l39-ejection-seat.mp4
+bash projects/l39-ejection-seat/make.sh                 # full video, ~30 min -> projects/l39-ejection-seat/build/l39-ejection-seat.mp4
+bash projects/l39-ejection-seat/make.sh stills 1.5,17.5 # look at a few frames first
+TO=2 bash projects/l39-ejection-seat/make.sh            # quick 2-second test
 ```
+`make.sh` copies `skills/zach-d-films/engine`, adds this folder's files, applies `pilot-outfit.patch`, makes the Kokoro voice (`am_michael`, speed 1.12), works out word timings, renders 4 segments in parallel with `GL=swiftshader`, joins them, adds the voice and checks the result.
