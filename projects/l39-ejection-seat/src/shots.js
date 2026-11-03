@@ -517,7 +517,7 @@ function shot11({ makeStage }) {
       ch.position.set(0, 1.42, -0.05 - 1.5 * settle);
       sunAt(scene, V(man.root.position.x, Math.max(2, y), 0), 6, [-3, 6, 5]);
       const k = easeInOut(range(t, 0, TL + 0.4));
-      const look = V(man.root.position.x, lerp(y + 3.5, 1.2, k), 0);
+      const look = V(man.root.position.x, y + lerp(3.2, 1.1, k), 0);   // keep the pilot in frame all the way down
       place(c, [lerp(5, 3.4, k), lerp(1.0, 1.25, k), lerp(9.5, 5.2, k)], [look.x, look.y, look.z]);
       return { dof: { focus: c.position.distanceTo(man.root.position), aperture: 0.0008, maxblur: 0.006 }, bloom: 0.35 };
     },
