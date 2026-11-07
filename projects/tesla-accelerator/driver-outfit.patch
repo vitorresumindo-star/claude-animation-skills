@@ -1,0 +1,40 @@
+--- a/src/human.js	2026-11-03 04:43:39.847139808 +0000
++++ b/src/human.js	2026-11-03 04:43:39.849378985 +0000
+@@ -168,8 +168,12 @@
+ export function makeHuman(outfit = 'plate', opts = {}) {
+   const M = materials();
+   const knight = outfit === 'knight';
+-  const limbMat = knight ? M.steel : (outfit === 'archer' ? M.clothGrey : M.cloth);
+-  const legMat = knight ? M.steel : M.cloth;
++  const driver = outfit === 'driver';
++  const shirt = driver ? new THREE.MeshStandardMaterial({ color: 0x2f6fd6, roughness: 0.85 }) : null;
++  const jeans = driver ? new THREE.MeshStandardMaterial({ color: 0x2b3446, roughness: 0.9 }) : null;
++  const shoe = driver ? new THREE.MeshStandardMaterial({ color: 0xf2f2f2, roughness: 0.6 }) : null;
++  const limbMat = driver ? shirt : knight ? M.steel : (outfit === 'archer' ? M.clothGrey : M.cloth);
++  const legMat = driver ? jeans : knight ? M.steel : M.cloth;
+   const handMat = knight ? M.steelDark : M.skin;
+   const thick = knight ? 0.014 : 0;
+ 
+@@ -180,7 +184,7 @@
+   const j = { root, pelvis, spine, chest };
+ 
+   // body: lower torso on spine, upper torso on chest (both lathe pieces)
+-  const bodyMat = knight ? M.steel : (outfit === 'archer' ? M.cloth : M.cloth);
++  const bodyMat = driver ? shirt : knight ? M.steel : (outfit === 'archer' ? M.cloth : M.cloth);
+   const lower = new THREE.Mesh(torsoShell(-0.18, 0.2, 0), bodyMat); spine.add(lower);
+   const upperG = torsoShell(0.18, 0.58, 0); upperG.translate(0, -0.2, 0);
+   const upper = new THREE.Mesh(upperG, bodyMat); chest.add(upper);
+@@ -212,11 +216,11 @@
+     kn.add(sph(0.06 + thick, legMat));
+     kn.add(cap(0.056 + thick, 0.36, legMat));
+     const an = new THREE.Group(); an.position.y = -0.45; kn.add(an);
+-    const footMat = knight ? M.steel : (outfit === 'archer' ? M.cloth : M.skin);
++    const footMat = driver ? shoe : knight ? M.steel : (outfit === 'archer' ? M.cloth : M.skin);
+     const ank = new THREE.Mesh(new THREE.CylinderGeometry(0.04, 0.045, 0.11, 20), footMat); ank.position.y = 0.0; an.add(ank);
+     if (!knight) { const cuff = new THREE.Mesh(new THREE.CylinderGeometry(0.06, 0.06, 0.05, 20), legMat); cuff.position.y = 0.045; an.add(cuff); }
+     const foot = sph(0.05, footMat, [0, -0.035, 0.05], [0.95, 0.62, 2.3]); an.add(foot);
+-    if (!knight && outfit !== 'archer') for (let t = 0; t < 5; t++) an.add(sph(0.011 - t * 0.0008, M.skin, [s * (-0.03 + t * 0.014), -0.055, 0.155 - t * 0.008]));
++    if (!knight && !driver && outfit !== 'archer') for (let t = 0; t < 5; t++) an.add(sph(0.011 - t * 0.0008, M.skin, [s * (-0.03 + t * 0.014), -0.055, 0.155 - t * 0.008]));
+     j[k + 'Hip'] = hip; j[k + 'Kn'] = kn; j[k + 'An'] = an;
+   }
+ 
