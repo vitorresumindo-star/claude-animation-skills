@@ -398,7 +398,7 @@ function shot10({ makeStage }) {
 function shot11({ makeStage }) {
   const scene = day(makeStage, { shadowSize: 4, sunDir: [-4, 6, 2] });
   scene.add(modernRoad(80));
-  const sign = highwaySign(['EXTRA MILE', '1 mi  →']); sign.position.set(-0.75, 0, -8.5); sign.rotation.y = 0.1; scene.add(sign);
+  const sign = highwaySign(['EXTRA MILE', '1 mi  →'], { w: 2.3, h: 1.15, height: 3.3 }); sign.position.set(-0.95, 0, -8.5); sign.rotation.y = 0.1; scene.add(sign);
   const man = modernGuy(); scene.add(man.root);
   const pack = backpack(); man.j.chest.add(pack); pack.position.set(0, 0.2, -0.26);
   for (let i = 0; i < 10; i++) { const tr = tree(i + 31, 1.3 + (i % 3) * 0.3); tr.position.set((i % 2 ? 1 : -1) * (4.5 + (i % 3)), 0, 2 - i * 4.5); scene.add(tr); }
@@ -409,7 +409,7 @@ function shot11({ makeStage }) {
     scene, camera: c,
     update(t) {
       const z = lerp(-3.2, -0.6, t / 2.3);
-      man.root.position.set(0.45, 0, z);
+      man.root.position.set(0.62, 0, z);
       const ph = t * 10.5;
       man.setPose(runPose(ph, { ...look(0, -0.1) }));
       man.root.position.y = Math.abs(Math.sin(ph)) * 0.05;

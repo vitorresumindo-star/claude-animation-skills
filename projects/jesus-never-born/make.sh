@@ -68,7 +68,7 @@ PY
     (cd "$B" && while read -r ww i n0 n1 mode; do
        [ "$ww" = "$w" ] && [ "$mode" = "render" ] || continue
        f=$(printf "seg/shot_%02d.mp4" "$i")
-       node render.mjs video "$f" $FPS "$(python3 -c "print($n0/$FPS)")" "$(python3 -c "print(($n1+0.5)/$FPS)")" > "${f%.mp4}.log" 2>&1 && echo "exit=0" >> "${f%.mp4}.log" || echo "exit=1" >> "${f%.mp4}.log"
+       node render.mjs video "$f" $FPS "$(python3 -c "print($n0/$FPS)")" "$(python3 -c "print(($n1+0.5)/$FPS)")" < /dev/null > "${f%.mp4}.log" 2>&1 && echo "exit=0" >> "${f%.mp4}.log" || echo "exit=1" >> "${f%.mp4}.log"
      done < seg/plan.txt) &
   done
   echo "rendering $(grep -c ' render$' "$B/seg/plan.txt") shots in $JOBS workers (about 3-5 s per frame per worker)..."

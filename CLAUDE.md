@@ -37,6 +37,8 @@ The script runs the repository's own `install.sh --voice`, which links the skill
 - Distances in a JS shortest-path search must be a `Float64Array`. A `Float32Array` rounds the stored value, the popped node then fails `d > dist[i]` and is skipped, and the search stalls without an error.
 - At 9:16 the frame is only about ±11.6° wide at fov 40. Work out where side props land before rendering: a sign, a milestone and a hospital patient all fell outside the frame or behind a pillar on the first try.
 - Music and effects: `projects/jesus-never-born/audio.py` synthesises a score and effects in numpy and ducks them under the voice. Check the mix by running the recogniser on it (`words.recognise(words.load('audio/mix.wav'))`) and comparing with the script, and read the voice-above-background numbers it prints.
+- Never feed `pow()` a base that can go negative in a shader, and clamp fresnel terms: with 4x MSAA the edge samples extrapolate varyings, `1 - abs(dot(n, v))` dips below 0, `pow` returns NaN, and the bloom pass smears that one pixel into a white square (seen on the globe's atmosphere). Square with `x * x`, not `pow(x, 2.0)`.
+- Never edit a project's `make.sh` while it is running: bash reads the script as it goes, so a rewrite in place can make it run garbage.
 - Rendering shot by shot (`projects/jesus-never-born/make.sh`) lets a fix re-render only the changed shots: `ONLY=7,9 bash projects/jesus-never-born/make.sh`.
 
 ## Never commit

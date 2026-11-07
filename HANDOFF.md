@@ -38,7 +38,7 @@ _Last updated 2026-11-07, branch `claude/determined-bell-oz0brg`. This branch me
 - The canopy jettison and the seat's exact shape are simplified cartoon versions.
 - The request mentioned "armour, arrow and impact conditions", which was leftover wording from the armour example. The video explains the seat's real limits instead: 150 km/h on the ground, 1,500 m in a spin, and the two-seat blocking system.
 - The first `cloud-setup.sh` run can fail with "curl: (56) Recv failure" while downloading the models. Run it again: it skips what's already done.
-- `git push` returned 403 in an earlier session. Commits went up through the GitHub MCP tool instead. See CLAUDE.md.
+- `git push` returned 403 in an earlier session (commits went up through the GitHub MCP tool instead); it worked normally on 2026-11-07. See CLAUDE.md.
 
 ## Next
 Ask the user for the next topic, or for changes to an earlier video (voice, pacing, ending, music). For a new topic, copy `projects/jesus-never-born/` as the template (shot-by-shot render, music and effects) and follow `skills/zach-d-films/SKILL.md`.
