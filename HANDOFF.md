@@ -23,8 +23,13 @@ _Last updated 2026-11-07, branch `claude/determined-bell-oz0brg`. This branch me
    - `astronaut()` restyles the engine person into a white suit and bubble helmet, with its own material copies so `redshift(k, fade)` can tint it red or fade it.
    - Rebuild: `bash projects/black-hole/make.sh` (~30 min).
 
+7. **"What would happen if Jesus were never born?"** 58.2 s, 1080x1920, 30 fps, 21 shots, the first zach-d-films video with a **music score and sound effects** (all synthesised in `audio.py`). Hook: "If Jesus had never been born, this year wouldn't be 2026." Jesus is never shown: the star over Bethlehem goes out in the first shot and shines again in the last.
+   - Source: `projects/jesus-never-born/` (`script.json`, `src/shots.js`, `src/fx.js`, `src/people.js`, `src/sets.js`, `src/sets2.js`, `src/maps.js`, `src/geo.js`, `audio.py`, `index.html`, `fonts/`, `make.sh`, and `README.md` with the fact sources and the simplified parts).
+   - Reusable pieces: the golden dissolve (`dissolvable()` erases any object, shadows included), `dress()` for new characters without engine patches, the split-flap year board, a Natural Earth table map with a computed spread, a globe, auto-fitting canvas text.
+   - Rebuild: `bash projects/jesus-never-born/make.sh` (~40 min). It renders **shot by shot**, so `ONLY=7,9 bash projects/jesus-never-born/make.sh` re-renders just those shots; `make.sh audio` remakes only the sound and the mux.
+
 ## Settings that worked
-- Voice: Kokoro `am_michael`, speed `1.12`. Word timings from Parakeet (`kit/words.py`).
+- Voice: Kokoro `am_michael`, speed `1.12`. Word timings from Parakeet (`kit/words.py`). Spell numbers out in `script.json` and check what the recogniser hears without the script: Kokoro said "do re mi" as "Durimai" until it was written "doh ray mee".
 - Render: `GL=swiftshader`, 30 fps, 4 parallel segments. Final mux as in SKILL.md step 7.
 - Fact sources: L-39, the DCS flight manual (VS1-BRI seat section) and Eduard's VS-1 BRI seat data. Pain video: Cox et al. 2006 (Nature, SCN9A) and the TRPV1 literature (about 43 °C).
 - Inside-the-body shots: `insideSky()` in `projects/no-pain/src/pain.js` recolors the sky (tissue red or X-ray navy) and hides the ground shadow. The X-ray uses an additive fresnel material, so there are no transparency sorting problems.
@@ -36,4 +41,4 @@ _Last updated 2026-11-07, branch `claude/determined-bell-oz0brg`. This branch me
 - `git push` returned 403 in an earlier session. Commits went up through the GitHub MCP tool instead. See CLAUDE.md.
 
 ## Next
-Ask the user for the next topic, or for changes to an earlier video (voice, pacing, ending). For a new topic, copy `projects/l39-ejection-seat/` as the template and follow `skills/zach-d-films/SKILL.md`.
+Ask the user for the next topic, or for changes to an earlier video (voice, pacing, ending, music). For a new topic, copy `projects/jesus-never-born/` as the template (shot-by-shot render, music and effects) and follow `skills/zach-d-films/SKILL.md`.
